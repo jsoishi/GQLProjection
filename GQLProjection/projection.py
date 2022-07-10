@@ -50,7 +50,6 @@ class GQLProject(Operator, FutureField):
         return self.args[0].layout is self._coeff_layout
     
     def operate(self, out):
-        #for i in range(self.dim):
         self.args[0].require_layout('c')
         out.data[:] = self.args[0].data
         out.data *= self.mask
