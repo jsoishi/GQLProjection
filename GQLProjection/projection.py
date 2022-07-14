@@ -26,9 +26,12 @@ class GQLProject(Operator, FutureField):
             self.dim = self.domain.dim - 1
         else:
             self.dim = dim
-        
+
         for i in range(self.dim):
-            low_mask &= (np.abs(local_coeff[i]) <= local_coeff[i].ravel()[cutoff_mode[i]])
+            inter = self.domain.bases[i].interval
+            L = inter[1] - inter[0]
+            local_mode_num = (L*local_coeff[i]/(2*np.pi)).astype(int)
+            low_mask &= (np.abs(local_mode_num) <= cutoff_mode[i])
         if subspace == 'high' or subspace == 'h':
             self.mask = ~low_mask
             subspace_name = 'h'
